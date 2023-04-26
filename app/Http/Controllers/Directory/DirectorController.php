@@ -37,6 +37,7 @@ class DirectorController extends Controller
                 $device = $request->userAgent();
                 $token = $director->createToken($device)->plainTextToken;
                 return Response([
+                    'success' => true,
                     'token' => $token
                 ]);
             } else {

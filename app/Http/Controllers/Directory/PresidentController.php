@@ -39,6 +39,7 @@ class PresidentController extends Controller
                 $device = $request->userAgent();
                 $token = $superadmin->createToken($device)->plainTextToken;
                 return Response([
+                    'success'=> true,
                     'token' => $token
                 ]);
             } else {
@@ -91,25 +92,6 @@ class PresidentController extends Controller
         ]);
     }
 
-    public function createacc(Request $request):Response
-    {
-        $request->validate([
-           'fullname'=>'required|string',
-           'email'=>'required|string',
-           'username'=>'required|string|min:8',
-           'password'=>'required|string|min:6'
-        ]);
-        $created = President::create([
-           'fullname' => $request->fullname,
-           'email' => $request->email,
-           'username' => $request->username,
-            'password' => Hash::make($request->password)
-        ]);
-        $created->save();
-        return Response([
-           'message' =>'Success'
-        ]);
-    }
     public function addImageProfile(Request $request): Response
     {
         $request->validate([

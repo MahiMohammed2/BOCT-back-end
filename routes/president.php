@@ -8,6 +8,5 @@ Route::post('/addDirector',[PresidentController::class,'addDirector']);
 Route::post('/addImageProfile',[PresidentController::class,'addImageProfile']);
 
 Route::post('/login',[PresidentController::class,'login'])->middleware('guest:sanctum');
-Route::post('/create',[PresidentController::class,'createacc'])->middleware('guest:sanctum');
 Route::delete('/logout/{token?}',[PresidentController::class,'logout']);
 

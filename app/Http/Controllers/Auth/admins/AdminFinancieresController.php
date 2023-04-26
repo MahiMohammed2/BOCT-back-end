@@ -35,6 +35,7 @@ class AdminFinancieresController extends Controller
                 $device = $request->userAgent();
                 $token = $finenciere->createToken($device)->plainTextToken;
                 return Response([
+                    'succeed' => true,
                     'token' => $token
                 ]);
             } else {
@@ -112,9 +113,9 @@ class AdminFinancieresController extends Controller
     public function index(): Response
     {
         $datas = Auth::user();
-        $employe = Employe::where('type', 'Finenciere')->get();
-        $arriver = Arriver::where('type', 'Finenciere')->get();
-        $depart = Depart::where('type_de_class', 'finenciere')->get();
+        $employe = Employe::where('type', 'Financiere')->get();
+        $arriver = Arriver::where('type', 'Financiere')->get();
+        $depart = Depart::where('type_de_class', 'financiere')->get();
         return Response([
             'datas' => $datas,
             'employe' => $employe,

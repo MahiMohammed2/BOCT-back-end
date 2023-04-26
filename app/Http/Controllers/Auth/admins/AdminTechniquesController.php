@@ -34,6 +34,7 @@ class AdminTechniquesController extends Controller
                 $device = $request->userAgent();
                 $token = $technique->createToken($device)->plainTextToken;
                 return Response([
+                    'succeed' => true,
                     'token' => $token
                 ]);
             } else {

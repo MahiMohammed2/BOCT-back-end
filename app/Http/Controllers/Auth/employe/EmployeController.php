@@ -34,9 +34,10 @@ class EmployeController extends Controller
                 $device = $request->userAgent();
                 $token = $employe->createToken($device)->plainTextToken;
                 return Response([
+                    'success' => true,
                     'token' => $token
                 ]);
-            } else {
+            }else{
                 return Response([
                     'message' => 'Your data is incorect'
                 ]);

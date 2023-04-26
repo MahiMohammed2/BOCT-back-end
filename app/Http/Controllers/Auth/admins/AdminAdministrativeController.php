@@ -35,6 +35,7 @@ class AdminAdministrativeController extends Controller
                 $device = $request->userAgent();
                 $token = $administrative->createToken($device)->plainTextToken;
                 return Response([
+                    'succeed' => true,
                     'token' => $token
                 ]);
             } else {

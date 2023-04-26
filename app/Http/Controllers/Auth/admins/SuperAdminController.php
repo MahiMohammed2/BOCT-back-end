@@ -38,6 +38,7 @@ class SuperAdminController extends Controller
                 $device = $request->userAgent();
                 $token = $superadmin->createToken($device)->plainTextToken;
                 return Response([
+                    'succeed' => true,
                     'token' => $token
                 ]);
             } else {
