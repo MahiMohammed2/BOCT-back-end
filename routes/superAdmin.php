@@ -27,3 +27,5 @@ Route::delete('/deleteFinancieres/{id}',[SuperAdminController::class,'deleteFina
 Route::post('/addTechniques',[SuperAdminController::class,'addTechniques']);
 Route::post('/editTechniques/{id}',[SuperAdminController::class,'editTechniques']);
 Route::delete('/deleteTechniques/{id}',[SuperAdminController::class,'deleteTechniques']);
+
+Route::post('/editProfile',[SuperAdminController::class,'editProfile']);

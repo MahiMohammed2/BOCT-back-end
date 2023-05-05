@@ -12,6 +12,6 @@ use App\Http\Controllers\Courrier\DepartController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('arriver/{id}',[ArriverController::class,'show']);
+Route::get('arriver/{id}',[ArriverController::class,'show'])->middleware('guest:sanctum');
 
 Route::get('depart/{id}',[DepartController::class,'show']);

@@ -124,4 +124,16 @@ class AdminAdministrativeController extends Controller
         ]);
 
     }
+    public function editProfile(Request $request): Response
+    {
+        $user = Auth::user()->id;
+        $director = AdminAdministrative::find($user);
+        $director->update([
+            'fullname'=>$request->fullname,
+            'email'=>$request->email,
+        ]);
+        return Response([
+            'message' => 'Le profile est modifier'
+        ]);
+    }
 }

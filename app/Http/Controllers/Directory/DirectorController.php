@@ -66,25 +66,6 @@ class DirectorController extends Controller
         ]);
     }
 
-    public function createacc(Request $request):Response
-    {
-        $request->validate([
-            'fullname'=>'required|string',
-            'email'=>'required|string',
-            'username'=>'required|string|min:8',
-            'password'=>'required|string|min:6'
-        ]);
-        $created = Director::create([
-            'fullname' => $request->fullname,
-            'email' => $request->email,
-            'username' => $request->username,
-            'password' => Hash::make($request->password)
-        ]);
-        $created->save();
-        return Response([
-            'message' =>'Success'
-        ]);
-    }
     public function index():Response
     {
         $datas = Auth::user();
@@ -102,12 +83,23 @@ class DirectorController extends Controller
             'Employe'=>$employe,
         ]);
     }
-
+    public function editProfile(Request $request): Response
+    {
+        $user = Auth::user()->id;
+        $director = Director::find($user);
+        $director->update([
+            'fullname'=>$request->fullname,
+            'email'=>$request->email,
+        ]);
+        return Response([
+            'message' => 'Le profile est modifier'
+        ]);
+    }
     function addSuperAdmin(Request $request):Response
     {
         $valide = $request->validate([
             'fullname' => 'required|string',
-            'CIN' => 'required|min:8|max:12',
+            'CIN' => 'required|min:7|max:8',
             'username' => 'required|string|min:8|max:12',
             'email' => 'required|email',
             'password' => 'required|min:6|max:8',
@@ -122,11 +114,56 @@ class DirectorController extends Controller
             ]);
             $addsuperadmin->save();
             return Response([
-                'message' => 'Super admin has been add succes'
+                'message' => "l'admin de bureau d'order a étè ajouter"
             ]);
         }
         return Response([
             'message' => 'your data is have some error validation'
+        ]);
+    }
+    function editSuperAdmin(Request $request,$id):Response
+    {
+        $findAdmin = SuperAdmin::find($id);
+        if ($findAdmin) {
+            $valide = $request->validate([
+                'fullname' => 'required',
+                'CIN' => 'required|min:7|max:8',
+                'username' => 'required|string|min:8|max:12',
+                'email' => 'required|email',
+                'password' => 'required|min:8|max:8'
+            ]);
+            if ($valide) {
+                $findAdmin->update([
+                    'fullname' => $request->fullname,
+                    'CIN' => $request->CIN,
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+                return Response([
+                    'message' =>  "l'admin de bureau d'order modifier succes"
+                ]);
+            } else {
+                return Response([
+                    'message' => 'error validation requests'
+                ]);
+            }
+        }
+        return Response([
+            'message' => 'this admin is not exist'
+        ]);
+    }
+    public function deleteSuperAdmin($id): Response
+    {
+        $findAdmin = SuperAdmin::find($id);
+        if ($findAdmin) {
+            $findAdmin->delete();
+            return Response([
+                'message' => "l'admin de bureau d'order a étè supprimer succes",
+            ]);
+        }
+        return Response([
+            'message' => "L'admin de bureau d'order n'exist pas reload la page",
         ]);
     }
     public function addImageProfile(Request $request): Response

@@ -113,9 +113,9 @@ class AdminFinancieresController extends Controller
     public function index(): Response
     {
         $datas = Auth::user();
-        $employe = Employe::where('type', 'Financiere')->get();
-        $arriver = Arriver::where('type', 'Financiere')->get();
-        $depart = Depart::where('type_de_class', 'financiere')->get();
+        $employe = Employe::where('type', 'Finenciere')->get();
+        $arriver = Arriver::where('type', 'Finenciere')->get();
+        $depart = Depart::where('type_de_class', 'Finenciere')->get();
         return Response([
             'datas' => $datas,
             'employe' => $employe,
@@ -123,5 +123,17 @@ class AdminFinancieresController extends Controller
             'depart' => $depart,
         ]);
 
+    }
+    public function editProfile(Request $request): Response
+    {
+        $user = Auth::user()->id;
+        $director = AdminFinancieres::find($user);
+        $director->update([
+            'fullname'=>$request->fullname,
+            'email'=>$request->email,
+        ]);
+        return Response([
+            'message' => 'Le profile est modifier'
+        ]);
     }
 }

@@ -15,10 +15,10 @@ class DirectorSeed extends Seeder
      */
     public function run(): void
     {
-        DB::table('presidents')->insert([
-            'fullname' => 'ahmed ahmed',
-            'username'=> 'ahmed1234',
-            'email' => 'ahmed1234@gmail.com',
+        DB::table('directors')->insert([
+            'fullname' => 'Mohammed Ali',
+            'username'=> 'M.Ali123',
+            'email' => 'directorX@taourirt.ma',
             'password' => Hash::make('12345678'),
         ]);
     }

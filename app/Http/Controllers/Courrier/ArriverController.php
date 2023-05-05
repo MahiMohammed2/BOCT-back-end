@@ -18,7 +18,7 @@ class ArriverController extends Controller
      */
     public function show($id):Response
     {
-        $arriver = Arriver::where('numero', $id);
+        $arriver = Arriver::find($id);
             return Response([
                 'arriver' => $arriver->get(),
             ]);

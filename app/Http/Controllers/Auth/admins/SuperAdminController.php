@@ -114,7 +114,7 @@ class SuperAdminController extends Controller
         ]);
     }
     //super admin of bureau d'order
-    public function index(): Response
+    public function index()
     {
         $admin_administrative = AdminAdministrative::all();
         $admin_financieres = AdminFinancieres::all();
@@ -123,9 +123,9 @@ class SuperAdminController extends Controller
         $arriver = Arriver::all();
         $depart = Depart::all();
         $superadmin = Auth::user();
-        return Response([
+        return response()->json([
             'datas' => $superadmin,
-            'AdminAdministratives' => $admin_administrative,
+           'AdminAdministratives' => $admin_administrative,
             'AdminFinancieres' => $admin_financieres,
             'AdminTechniques' => $admin_techniques,
             'Employe' => $employe,
@@ -153,12 +153,10 @@ class SuperAdminController extends Controller
                 'CIN' => $request->CIN,
                 'type' => $request->type,
                 'interet' => $request->interet,
-                'image_profile' => 'nullable',
-                'image_url' => 'sometimes',
             ]);
             $addemp->save();
             return Response([
-                'message' => 'Employe has been add succes'
+                'message' => "l'employe a étè ajouter succes"
             ]);
         }
         return Response([
@@ -175,7 +173,6 @@ class SuperAdminController extends Controller
                 'email' => 'required|email',
                 'password' => 'required|min:6|max:8',
                 'CIN' => 'required|min:8|max:12',
-                'type' => 'required|string',
             ]);
             if ($valide) {
                 $findEmp->update([
@@ -183,15 +180,14 @@ class SuperAdminController extends Controller
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'CIN' => $request->CIN,
-                    'type' => $request->type,
                 ]);
                 return Response([
-                    'message' => 'this employe has been updated succes'
+                    'message' => "l'employe a étè modifier succes"
                 ]);
             }
         }
         return Response([
-            'message' => 'this employe is not exist'
+            'message' => "l'employe n'exist pas"
         ]);
     }
    /*public function showEmploye($id) {
@@ -203,11 +199,11 @@ class SuperAdminController extends Controller
         if ($findEmp) {
             $findEmp->delete();
             return Response([
-                'message' => 'this employe has been deleted succes'
+                'message' => "l'employe a étè supprimé succes"
             ]);
         }
         return Response([
-            'message' => 'this employe is not exist'
+            'message' => "l'employe n'exist pas reload la page"
         ]);
     }
 
@@ -232,7 +228,7 @@ class SuperAdminController extends Controller
             ]);
             $add->save();
             return Response([
-                'message' => 'Admin Administrative has added successfully',
+                'message' => "l'admin a étè ajouter succes",
             ]);
         }
         return Response([
@@ -258,7 +254,7 @@ class SuperAdminController extends Controller
                     'password' => Hash::make($request->password),
                 ]);
                 return Response([
-                    'message' => 'Admin Administrative has been updated successfully'
+                    'message' => "l'admin a étè modifier succes"
                 ]);
             } else {
                 return Response([
@@ -277,11 +273,11 @@ class SuperAdminController extends Controller
         if ($findAdmin) {
             $findAdmin->delete();
             return Response([
-                'message' => 'Admin Administrative has been deleted successfully',
+                'message' => "l'admin a étè supprimer succes",
             ]);
         }
         return Response([
-            'message' => 'this admin is not exist',
+            'message' => "L'admin n'exist pas reload la page",
         ]);
     }
     //end of functions
@@ -304,7 +300,7 @@ class SuperAdminController extends Controller
             ]);
             $add->save();
             return Response([
-                'message' => 'Admin Financieres has added successfully',
+                'message' => "l'admin a étè ajouter succes",
             ]);
         }
         return Response([
@@ -330,7 +326,7 @@ class SuperAdminController extends Controller
                     'password' => Hash::make($request->password),
                 ]);
                 return Response([
-                    'message' => 'Admin Financieres has been updated successfully'
+                    'message' =>  "l'admin a étè modifier succes"
                 ]);
             } else {
                 return Response([
@@ -349,11 +345,11 @@ class SuperAdminController extends Controller
         if ($findAdmin) {
             $findAdmin->delete();
             return Response([
-                'message' => 'Admin Financieres has been deleted successfully',
+                'message' => "l'admin a étè supprimer succes",
             ]);
         }
         return Response([
-            'message' => 'this admin is not exist',
+            'message' => "L'admin n'exist pas reload la page",
         ]);
     }
     //end of functions
@@ -378,7 +374,7 @@ class SuperAdminController extends Controller
             ]);
             $add->save();
             return Response([
-                'message' => 'Admin Techniques has added successfully',
+                'message' => "l'admin a étè ajouter succes",
             ]);
         }
         return Response([
@@ -404,7 +400,7 @@ class SuperAdminController extends Controller
                     'password' => Hash::make($request->password),
                 ]);
                 return Response([
-                    'message' => 'Admin Techniques has been updated successfully'
+                    'message' =>  "l'admin a étè modifier succes"
                 ]);
             } else {
                 return Response([
@@ -423,11 +419,23 @@ class SuperAdminController extends Controller
         if ($findAdmin) {
             $findAdmin->delete();
             return Response([
-                'message' => 'Admin Techniques has been deleted successfully',
+                'message' => "l'admin a étè supprimer succes",
             ]);
         }
         return Response([
-            'message' => 'this admin is not exist',
+            'message' => "L'admin n'exist pas reload la page",
+        ]);
+    }
+    public function editProfile(Request $request): Response
+    {
+        $user = Auth::user()->id;
+        $superadmin = SuperAdmin::find($user);
+        $superadmin->update([
+            'fullname'=>$request->fullname,
+            'email'=>$request->email
+        ]);
+        return Response([
+            'message' => 'Le profile est modifier'
         ]);
     }
 }

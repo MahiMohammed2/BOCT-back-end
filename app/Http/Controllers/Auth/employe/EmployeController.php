@@ -37,7 +37,7 @@ class EmployeController extends Controller
                     'success' => true,
                     'token' => $token
                 ]);
-            }else{
+            } else {
                 return Response([
                     'message' => 'Your data is incorect'
                 ]);
@@ -82,52 +82,51 @@ class EmployeController extends Controller
     }
 
 
-
     public function addImageProfile(Request $request): Response
     {
         $request->validate([
             'image_profile' => 'nullable',
             'image_url' => 'sometimes',
         ]);
-    $employe = Auth::user();
+        $employe = Auth::user();
         if ($request->hasFile("image_profile")) {
-                $exist = Storage::disk('public')->exists("employe/image/{$employe->image_profile}");
-                if ($exist) {
-                    Storage::disk('public')->delete("employe/image/{$employe->image_profile}");
-                    $img = $request->file("image_profile");// Uploadedfile;
-                    $imageName = Str::random() . '.' . $img->getClientOriginalName();
+            $exist = Storage::disk('public')->exists("employe/image/{$employe->image_profile}");
+            if ($exist) {
+                Storage::disk('public')->delete("employe/image/{$employe->image_profile}");
+                $img = $request->file("image_profile");// Uploadedfile;
+                $imageName = Str::random() . '.' . $img->getClientOriginalName();
 
-                    $path = Storage::disk('public')->putFileAs('employe/image', $img, $imageName);
-                    $exis = $employe->update([
-                        'image_profile' => $imageName,
-                        'image_url' => asset("storage/" . $path)
+                $path = Storage::disk('public')->putFileAs('employe/image', $img, $imageName);
+                $exis = $employe->update([
+                    'image_profile' => $imageName,
+                    'image_url' => asset("storage/" . $path)
+                ]);
+                if ($exis) {
+                    return Response([
+                        'message' => 'image add successfully'
                     ]);
-                    if ($exis) {
-                        return Response([
-                            'message' => 'image add successfully'
-                        ]);
-                    }
                 }
-                else{
-                    $img = $request->file("image_profile");// Uploadedfile;
-                    $imageName = Str::random() . '.' . $img->getClientOriginalName();
-                    $path = Storage::disk('public')->putFileAs('employe/image', $img, $imageName);
-                    $exis = $employe->update([
-                        'image_profile' => $imageName,
-                        'image_url' => asset("storage/" . $path)
+            } else {
+                $img = $request->file("image_profile");// Uploadedfile;
+                $imageName = Str::random() . '.' . $img->getClientOriginalName();
+                $path = Storage::disk('public')->putFileAs('employe/image', $img, $imageName);
+                $exis = $employe->update([
+                    'image_profile' => $imageName,
+                    'image_url' => asset("storage/" . $path)
+                ]);
+                if ($exis) {
+                    return Response([
+                        'message' => 'image add successfully'
                     ]);
-                    if ($exis) {
-                        return Response([
-                            'message' => 'image add successfully'
-                        ]);
-                    }
                 }
+            }
 
         }
         return Response([
-            'message'=>'not good'
+            'message' => 'not good'
         ]);
     }
+
     public function addArriver(Request $request)
     {
         $request->validate([
@@ -147,7 +146,23 @@ class EmployeController extends Controller
         ]);
         $arriver->save();
         return Response([
-            'message' => "l'arriver a ete ajouter"
+            'message' => "l'arriver a étè ajouter"
+        ]);
+    }
+    public function deleteArriver($id): Response
+    {
+        $arriver = Arriver::find($id);
+        $arriver->delete();
+        return Response([
+            'message'=>"l'arriver a étè supprimer"
+        ]);
+    }
+    public function deleteDepart($id): Response
+    {
+        $arriver = Depart::find($id);
+        $arriver->delete();
+        return Response([
+            'message'=>"le depart a étè supprimer"
         ]);
     }
     public function addDepart(Request $request): Response
@@ -156,9 +171,9 @@ class EmployeController extends Controller
         $request->validate([
             'expediteur' => 'required|string',
             'objectif' => 'required|string',
-            'type_de_courier'=>'required|string',
-            'date_de_commission'=>'required|string',
-            'date_specifiee'=>'required|string',
+            'type_de_courier' => 'required|string',
+            'date_de_commission' => 'required|string',
+            'date_specifiee' => 'required|string',
         ]);
         $arriver = Depart::create([
             'date_de_fichier' => $request->date_de_fichier,
@@ -174,6 +189,18 @@ class EmployeController extends Controller
         $arriver->save();
         return Response([
             'message' => "le depart a ete ajouter"
+        ]);
+    }
+    public function editProfile(Request $request): Response
+    {
+        $user = Auth::user()->id;
+        $employe = Employe::find($user);
+        $employe->update([
+            'fullname'=>$request->fullname,
+            'email'=>$request->email
+        ]);
+        return Response([
+            'message' => 'Le profile est modifier'
         ]);
     }
 }

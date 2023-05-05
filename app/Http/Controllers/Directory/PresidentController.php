@@ -91,7 +91,18 @@ class PresidentController extends Controller
             'Employe'=>$employe,
         ]);
     }
-
+    public function editProfile(Request $request): Response
+    {
+        $user = Auth::user()->id;
+        $director = President::find($user);
+        $director->update([
+            'fullname'=>$request->fullname,
+            'email'=>$request->email,
+        ]);
+        return Response([
+            'message' => 'Le profile est modifier'
+        ]);
+    }
     public function addImageProfile(Request $request): Response
     {
         $request->validate([
